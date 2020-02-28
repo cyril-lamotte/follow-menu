@@ -93,27 +93,6 @@ followMenu('.menu-wrap', {
 ```
 
 
-```js
-// Absolute positionning.
-$('#trigger').togglePanel({
-  panel: 'id',
-  event: 'click',
-  mode: 'custom',
-  customShow: function($panel, $trigger) {
-
-    $panel.position({
-      of: $trigger,
-      my: 'left top',
-      at: 'left bottom'
-    });
-
-  },
-  autoFocus: false,
-  panelLabel: 'Recherche'
-});
-```
-
-
 
 ### 4. Options
 

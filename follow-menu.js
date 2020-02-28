@@ -13,7 +13,8 @@ var followMenu = function(trigger_selector, options) {
     'prefix': 'follow-menu',
     'indicator': '.menu__indicator',
     'item_tag': 'li',
-    'active_class': 'is-active'
+    'active_class': 'is-active',
+    'exception': function() {}
   }
 
   var p = {}; // Plugin.
@@ -40,17 +41,17 @@ var followMenu = function(trigger_selector, options) {
     p.settings.$indicator = p.menu.querySelector(p.settings.indicator);
 
     // Get all menu items.
-    p.settings.menu_items = p.menu.querySelectorAll('li');
+    p.settings.menu_items = p.menu.querySelectorAll(p.settings.item_tag);
 
-    var first_item_active = p.settings.menu_items[0];
-    var active_item = p.menu.querySelector(p.settings.item_tag + '.' +  p.settings.active_class);
+    var $first_item_active = p.settings.menu_items[0];
+    var $active_item = p.menu.querySelector(p.settings.item_tag + '.' +  p.settings.active_class);
 
-    if (active_item) {
-      first_item_active = active_item;
+    if ($active_item) {
+      $first_item_active = $active_item;
     }
 
     // Initialise the indicator.
-    setIndicatorPosition(first_item_active);
+    setIndicatorPosition($first_item_active);
 
     // Avoid the first animation by setting CSS transitions after first load.
     window.setTimeout(function() {
@@ -67,6 +68,11 @@ var followMenu = function(trigger_selector, options) {
    * Define size & position of the indicator.
    */
   var setIndicatorPosition = function($ref) {
+
+    // Only update position if it is not an exception.
+    if (!p.settings.exception()) {
+      return false;
+    }
 
     // Remove current attribute.
     p.settings.menu_items.forEach(function(item) {
@@ -110,6 +116,7 @@ var followMenu = function(trigger_selector, options) {
 
     });
 
+    window.onload = refreshPosition;
     window.addEventListener('resize', throttle(refreshPosition, 250));
 
   };
